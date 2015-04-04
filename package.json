@@ -1,0 +1,27 @@
+{
+  "name": "speedjs",
+  "version": "1.0.0",
+  "description": "SpeedJS is a pure JavaScript library that gives similar functionality as jQuery, but with speed and performance in mind.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshcoody/speedjs.git"
+  },
+  "keywords": [
+    "JavaScript"
+  ],
+  "author": "Josh Coody",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshcoody/speedjs/issues"
+  },
+  "homepage": "https://github.com/joshcoody/speedjs",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.0.0",
+    "gulp-uglifyjs": "^0.6.1"
+  }
+}
