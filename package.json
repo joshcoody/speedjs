@@ -23,5 +23,8 @@
     "gulp": "^3.8.11",
     "gulp-babel": "^5.0.0",
     "gulp-uglifyjs": "^0.6.1"
+  },
+  "dependencies": {
+    "es6-shim": "^0.27.1"
   }
 }
