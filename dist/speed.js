@@ -6,17 +6,18 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 /* jshint esnext: true, browser: true */
 
-var DOM = (function () {
-  function DOM(selector) {
-    _classCallCheck(this, DOM);
+var _events = {};
 
-    var elements = document.querySelectorAll(selector);
-    this.length = elements.length;
-    this._events = {};
-    Object.assign(this, elements);
+var SpeedJS = (function () {
+  function SpeedJS(selector) {
+    _classCallCheck(this, SpeedJS);
+
+    this._elements = document.querySelectorAll(selector);
+    this.length = this._elements.length;
+    //Object.assign(this, elements);
   }
 
-  _createClass(DOM, [{
+  _createClass(SpeedJS, [{
     key: "each",
     value: function each(callback) {
       var _iteratorNormalCompletion = true;
@@ -24,7 +25,7 @@ var DOM = (function () {
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = Array.from(this)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = Array.from(this._elements)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var el = _step.value;
 
           callback.call(el);
@@ -68,9 +69,10 @@ var DOM = (function () {
   }, {
     key: "on",
     value: function on(event, callback) {
-      this._events[event] = this._events[event] || [];
-      this._events[event].push(callback);
       return this.each(function () {
+        _events[this] = _events[this] || {};
+        _events[this][event] = _events[this][event] || [];
+        _events[this][event].push(callback);
         this.addEventListener(event, callback, false);
       });
     }
@@ -80,20 +82,85 @@ var DOM = (function () {
       event = event ? event : false;
       callback = callback ? callback : false;
       return this.each(function () {
-        if (event) {} else {
-          var el = this;
+        var el = this;
+        if (event) {
+          if (callback) {
+            var index = 0;
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+              for (var _iterator2 = _events[el][event][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var func = _step2.value;
+
+                console.log(index);
+                if (String(callback) === String(func)) {
+                  el.removeEventListener(event, func);
+                  delete _events[el][event][index];
+                }
+                index++;
+                console.log(index);
+              }
+            } catch (err) {
+              _didIteratorError2 = true;
+              _iteratorError2 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                  _iterator2["return"]();
+                }
+              } finally {
+                if (_didIteratorError2) {
+                  throw _iteratorError2;
+                }
+              }
+            }
+          } else {
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
+
+            try {
+              for (var _iterator3 = _events[el][event][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                var func = _step3.value;
+
+                el.removeEventListener(event, func);
+              }
+            } catch (err) {
+              _didIteratorError3 = true;
+              _iteratorError3 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion3 && _iterator3["return"]) {
+                  _iterator3["return"]();
+                }
+              } finally {
+                if (_didIteratorError3) {
+                  throw _iteratorError3;
+                }
+              }
+            }
+
+            delete _events[el][event];
+            if (Object.keys(_events[el]).length === 0) {
+              delete _events[el];
+            }
+          }
+        } else {
           var elClone = el.cloneNode(true);
           el.parentNode.replaceChild(elClone, el);
+          delete _events[el];
         }
       });
     }
   }]);
 
-  return DOM;
+  return SpeedJS;
 })();
 
 var $ = function $(selector) {
-  return new DOM(selector);
+  return new SpeedJS(selector);
 };
 
-$.fn = $.prototype = DOM.prototype;
+$.fn = $.prototype = SpeedJS.prototype;
