@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (descriptor.value) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -18,7 +18,7 @@ var SpeedJS = (function () {
   }
 
   _createClass(SpeedJS, [{
-    key: "each",
+    key: 'each',
     value: function each(callback) {
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -35,8 +35,8 @@ var SpeedJS = (function () {
         _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator["return"]) {
-            _iterator["return"]();
+          if (!_iteratorNormalCompletion && _iterator['return']) {
+            _iterator['return']();
           }
         } finally {
           if (_didIteratorError) {
@@ -48,26 +48,26 @@ var SpeedJS = (function () {
       return this;
     }
   }, {
-    key: "addClass",
+    key: 'addClass',
     value: function addClass(className) {
       return this.each(function () {
         this.classList.add(className);
       });
     }
   }, {
-    key: "removeClass",
+    key: 'removeClass',
     value: function removeClass(className) {
       return this.each(function () {
         this.classList.remove(className);
       });
     }
   }, {
-    key: "hasClass",
+    key: 'hasClass',
     value: function hasClass(className) {
       return this[0].classList.contains(className);
     }
   }, {
-    key: "on",
+    key: 'on',
     value: function on(event, callback) {
       return this.each(function () {
         _events[this] = _events[this] || {};
@@ -77,7 +77,7 @@ var SpeedJS = (function () {
       });
     }
   }, {
-    key: "off",
+    key: 'off',
     value: function off(event, callback) {
       event = event ? event : false;
       callback = callback ? callback : false;
@@ -107,8 +107,8 @@ var SpeedJS = (function () {
               _iteratorError2 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
-                  _iterator2["return"]();
+                if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+                  _iterator2['return']();
                 }
               } finally {
                 if (_didIteratorError2) {
@@ -132,8 +132,8 @@ var SpeedJS = (function () {
               _iteratorError3 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion3 && _iterator3["return"]) {
-                  _iterator3["return"]();
+                if (!_iteratorNormalCompletion3 && _iterator3['return']) {
+                  _iterator3['return']();
                 }
               } finally {
                 if (_didIteratorError3) {
@@ -152,6 +152,27 @@ var SpeedJS = (function () {
           el.parentNode.replaceChild(elClone, el);
           delete _events[el];
         }
+      });
+    }
+  }, {
+    key: 'trigger',
+    value: function trigger(type, customData) {
+      customData = customData || false;
+      return this.each(function () {
+        var el = this;
+        var event = undefined;
+        if (customData) {
+          if (window.CustomEvent) {
+            event = new CustomEvent(type, { detail: customData });
+          } else {
+            event = document.createEvent('CustomEvent');
+            event.initCustomEvent(type, true, true, customData);
+          }
+        } else {
+          event = document.createEvent('HTMLEvents');
+          event.initEvent(type, true, false);
+        }
+        el.dispatchEvent(event);
       });
     }
   }]);

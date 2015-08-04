@@ -74,7 +74,27 @@ class SpeedJS {
       }
     });
   }
-  
+
+  trigger(type, customData) {
+    customData = customData || false;
+    return this.each(function(){
+      let el = this;
+      let event;
+      if(customData) {
+        if (window.CustomEvent) {
+          event = new CustomEvent(type, {detail: customData});
+        } else {
+          event = document.createEvent('CustomEvent');
+          event.initCustomEvent(type, true, true, customData);
+        }
+      }else {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(type, true, false);
+      }
+      el.dispatchEvent(event);
+    });
+  }
+
 }
 
 var $ = selector => new SpeedJS(selector);
