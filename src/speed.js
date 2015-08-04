@@ -1,15 +1,15 @@
 /* jshint esnext: true, browser: true */
 
-var _events = {};
+const _events = {};
 
 class SpeedJS {
   constructor(selector) {
-    this._elements = document.querySelectorAll(selector);
-    this.length = this._elements.length;
+    this.elements = document.querySelectorAll(selector);
+    this.length = this.elements.length;
   }
 
   each(callback) {
-    for(let el of Array.from(this._elements)) {
+    for(let el of Array.from(this.elements)) {
       callback.call(el);
     }
     return this;
@@ -96,8 +96,8 @@ class SpeedJS {
 
   html(content) {
     content = content || false;
-    if(content) {
-      return this._elements[0].innerHTML;
+    if(!content) {
+      return this.elements[0].innerHTML;
     }else {
       return this.each(function() {
         let el = this;
@@ -108,6 +108,8 @@ class SpeedJS {
 
 }
 
-var $ = selector => new SpeedJS(selector);
+const $ = selector => new SpeedJS(selector);
 
 $.fn = $.prototype = SpeedJS.prototype;
+
+const speedjs = $;

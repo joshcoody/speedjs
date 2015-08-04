@@ -12,8 +12,8 @@ var SpeedJS = (function () {
   function SpeedJS(selector) {
     _classCallCheck(this, SpeedJS);
 
-    this._elements = document.querySelectorAll(selector);
-    this.length = this._elements.length;
+    this.elements = document.querySelectorAll(selector);
+    this.length = this.elements.length;
   }
 
   _createClass(SpeedJS, [{
@@ -24,7 +24,7 @@ var SpeedJS = (function () {
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = Array.from(this._elements)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = Array.from(this.elements)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var el = _step.value;
 
           callback.call(el);
@@ -178,8 +178,8 @@ var SpeedJS = (function () {
     key: 'html',
     value: function html(content) {
       content = content || false;
-      if (content) {
-        return this._elements[0].innerHTML;
+      if (!content) {
+        return this.elements[0].innerHTML;
       } else {
         return this.each(function () {
           var el = this;
@@ -197,3 +197,5 @@ var $ = function $(selector) {
 };
 
 $.fn = $.prototype = SpeedJS.prototype;
+
+var speedjs = $;
