@@ -6,7 +6,6 @@ class SpeedJS {
   constructor(selector) {
     this._elements = document.querySelectorAll(selector);
     this.length = this._elements.length;
-    //Object.assign(this, elements);
   }
 
   each(callback) {
@@ -93,6 +92,18 @@ class SpeedJS {
       }
       el.dispatchEvent(event);
     });
+  }
+
+  html(content) {
+    content = content || false;
+    if(content) {
+      return this._elements[0].innerHTML;
+    }else {
+      return this.each(function() {
+        let el = this;
+        el.innerHTML = content;
+      });
+    }
   }
 
 }

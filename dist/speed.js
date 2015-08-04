@@ -14,7 +14,6 @@ var SpeedJS = (function () {
 
     this._elements = document.querySelectorAll(selector);
     this.length = this._elements.length;
-    //Object.assign(this, elements);
   }
 
   _createClass(SpeedJS, [{
@@ -174,6 +173,19 @@ var SpeedJS = (function () {
         }
         el.dispatchEvent(event);
       });
+    }
+  }, {
+    key: 'html',
+    value: function html(content) {
+      content = content || false;
+      if (content) {
+        return this._elements[0].innerHTML;
+      } else {
+        return this.each(function () {
+          var el = this;
+          el.innerHTML = content;
+        });
+      }
     }
   }]);
 
