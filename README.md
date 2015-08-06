@@ -1,3 +1,9 @@
+# SpeedJS
+> An ES6 implementation of a JavaScript Library similar to jQuery. This is a work in progress, but the idea is for it to be a viable alternative to jQuery eventually.
+
+### Playground
+Here is a link to the rawgit for playing around with the library via your devtools: http://rawgit.com/joshcoody/speedjs/master/index.html
+
 #### Todo List
 
 - [x] Start Selectors
