@@ -12,8 +12,31 @@ var SpeedJS = (function () {
   function SpeedJS(selector) {
     _classCallCheck(this, SpeedJS);
 
-    this.elements = document.querySelectorAll(selector);
-    this.length = this.elements.length;
+    var typeOfSelector = selector.substr(0, 1);
+    var anyBrackets = selector.indexOf('[');
+    var textSelector = selector.substr(1);
+    var switchResult = undefined;
+    switch (typeOfSelector) {
+      case '#':
+        switchResult = document.getElementById(textSelector);
+        switchResult = switchResult === null ? false : [switchResult];
+        break;
+      case '.':
+        switchResult = document.getElementsByClassName(textSelector);
+        break;
+      default:
+        if (anyBrackets > 0) {
+          switchResult = document.querySelectorAll(selector);
+        } else {
+          switchResult = document.getElementsByTagName(selector);
+        }
+    }
+    if (switchResult) {
+      this.elements = switchResult;
+      this.length = this.elements.length;
+    } else {
+      throw 'No elements were found.';
+    }
   }
 
   _createClass(SpeedJS, [{
@@ -44,6 +67,18 @@ var SpeedJS = (function () {
         }
       }
 
+      return this;
+    }
+  }, {
+    key: 'first',
+    value: function first() {
+      this.elements = [this.elements[0]];
+      return this;
+    }
+  }, {
+    key: 'last',
+    value: function last() {
+      this.elements = [this.elements[this.elements.length - 1]];
       return this;
     }
   }, {
@@ -93,13 +128,11 @@ var SpeedJS = (function () {
               for (var _iterator2 = _events[el][event][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                 var func = _step2.value;
 
-                console.log(index);
                 if (String(callback) === String(func)) {
                   el.removeEventListener(event, func);
                   delete _events[el][event][index];
                 }
                 index++;
-                console.log(index);
               }
             } catch (err) {
               _didIteratorError2 = true;
@@ -185,6 +218,32 @@ var SpeedJS = (function () {
           var el = this;
           el.innerHTML = content;
         });
+      }
+    }
+  }, {
+    key: 'text',
+    value: function text(content) {
+      content = content || false;
+      if (!content) {
+        return this.elements[0].innerText;
+      } else {
+        return this.each(function () {
+          var el = this;
+          el.innerText = content;
+        });
+      }
+    }
+  }, {
+    key: 'attr',
+    value: function attr(attribute, value) {
+      value = value || false;
+      if (value) {
+        return this.each(function () {
+          var el = this;
+          el.setAttribute(attribute, value);
+        });
+      } else {
+        return this.elements[0].getAttribute(attribute);
       }
     }
   }]);

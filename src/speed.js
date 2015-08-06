@@ -4,14 +4,47 @@ const _events = {};
 
 class SpeedJS {
   constructor(selector) {
-    this.elements = document.querySelectorAll(selector);
-    this.length = this.elements.length;
+    let typeOfSelector = selector.substr(0,1);
+    let anyBrackets = selector.indexOf('[');
+    let textSelector = selector.substr(1);
+    let switchResult;
+    switch (typeOfSelector) {
+      case '#':
+        switchResult = document.getElementById(textSelector);
+        switchResult = switchResult === null ? false : [switchResult];
+        break;
+      case '.':
+        switchResult = document.getElementsByClassName(textSelector);
+        break;
+      default:
+        if(anyBrackets > 0) {
+          switchResult = document.querySelectorAll(selector);
+        } else {
+          switchResult = document.getElementsByTagName(selector);
+        }
+    }
+    if(switchResult) {
+      this.elements = switchResult;
+      this.length = this.elements.length;
+    } else {
+      throw 'No elements were found.';
+    }
   }
 
   each(callback) {
     for(let el of Array.from(this.elements)) {
       callback.call(el);
     }
+    return this;
+  }
+
+  first() {
+    this.elements = [this.elements[0]];
+    return this;
+  }
+
+  last() {
+    this.elements = [this.elements[this.elements.length-1]];
     return this;
   }
 
@@ -49,13 +82,11 @@ class SpeedJS {
         if(callback) {
           let index = 0;
           for(let func of _events[el][event]) {
-            console.log(index);
             if(String(callback) === String(func)) {
               el.removeEventListener(event, func);
               delete _events[el][event][index];
             }
             index++;
-            console.log(index);
           }
         }else{
           for(let func of _events[el][event]) {
@@ -98,11 +129,35 @@ class SpeedJS {
     content = content || false;
     if(!content) {
       return this.elements[0].innerHTML;
-    }else {
+    } else {
       return this.each(function() {
         let el = this;
         el.innerHTML = content;
       });
+    }
+  }
+
+  text(content) {
+    content = content || false;
+    if(!content) {
+      return this.elements[0].innerText;
+    } else {
+      return this.each(function() {
+        let el = this;
+        el.innerText = content;
+      });
+    }
+  }
+
+  attr(attribute, value) {
+    value = value || false;
+    if(value) {
+      return this.each(function() {
+        let el = this;
+        el.setAttribute(attribute, value);
+      });
+    } else {
+      return this.elements[0].getAttribute(attribute);
     }
   }
 

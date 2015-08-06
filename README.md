@@ -5,7 +5,6 @@
 	- [x] Class Selector
 	- [x] Attribute Selector
 	- [x] Tagname Selector
-	- [x] Name Selector
 - [x] Start Built in Functions
 	- [x] each()
 	- [x] addClass()
@@ -13,4 +12,10 @@
 	- [x] hasClass()
 	- [x] on()
 	- [x] off()
+	- [x] first()
+	- [x] last()
+	- [x] trigger()
+	- [x] html()
+	- [x] text()
+	- [x] attr()
 	- [ ] More to come...
